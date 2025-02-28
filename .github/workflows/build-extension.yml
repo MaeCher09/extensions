@@ -1,17 +1,29 @@
-package 
-eu.kanade.tachiyomi.extension.en.myextension
+name: Build Tachiyomi Extension
 
-import eu.kanade.tachiyomi.source.SourceFactory
-import eu.kanade.tachiyomi.source.model.FilterList
-import eu.kanade.tachiyomi.source.online.ParsedHttpSource
+on: [push, pull_request]
 
-class MyExtension : ParsedHttpSource() {
-    override val name = "ManhuaHub"
-    override val baseUrl = "https://manhuahub.com/"
-    override val lang = "en"
-    override val supportsLatest = true
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-    override fun popularMangaRequest(page: Int) = throw NotImplementedError()
-    override fun latestUpdatesRequest(page: Int) = throw NotImplementedError()
-    override fun searchMangaRequest(page: Int, query: String, filters: FilterList) = throw NotImplementedError()
-}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Grant Execute Permission to Gradlew
+        run: chmod +x gradlew
+
+      - name: Build APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Tachiyomi-Extension
+          path: app/build/outputs/apk/debug/
