@@ -1,0 +1,17 @@
+package 
+eu.kanade.tachiyomi.extension.en.myextension
+
+import eu.kanade.tachiyomi.source.SourceFactory
+import eu.kanade.tachiyomi.source.model.FilterList
+import eu.kanade.tachiyomi.source.online.ParsedHttpSource
+
+class MyExtension : ParsedHttpSource() {
+    override val name = "ManhuaHub"
+    override val baseUrl = "https://manhuahub.com/"
+    override val lang = "en"
+    override val supportsLatest = true
+
+    override fun popularMangaRequest(page: Int) = throw NotImplementedError()
+    override fun latestUpdatesRequest(page: Int) = throw NotImplementedError()
+    override fun searchMangaRequest(page: Int, query: String, filters: FilterList) = throw NotImplementedError()
+}
